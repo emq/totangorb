@@ -43,12 +43,12 @@ module Totangorb
     def translate_params(params = {})
       {
         sdr_s:   service_id,
-        sdr_u:   params.fetch(:username,     'Unknown'),
-        sdr_o:   params.fetch(:account_id,   'Unknown'),
-        sdr_odn: params.fetch(:account_name, 'Unknown'),
-        sdr_a:   params.fetch(:activity,     'Unknown'),
-        sdr_m:   params.fetch(:module,       'Unknown')
-      }.merge(parse_attributes(params.fetch(:attributes, {})))
+        sdr_u:   params[:username],
+        sdr_o:   params[:account_id],
+        sdr_odn: params[:account_name],
+        sdr_a:   params[:activity],
+        sdr_m:   params[:module]
+      }.merge(parse_attributes(params.fetch(:attributes, {}))).delete_if { |k, v| v.nil? }
     end
 
     # Prepends every optional account attribute hash key with 'sdr_u.<key>'
