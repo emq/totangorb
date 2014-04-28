@@ -72,6 +72,21 @@ describe Totangorb::Tracker do
       end
     end
 
+    describe "setting event's timestamp" do
+      it 'sets sdr_ts attribute in iso8601 format' do
+        Net::HTTP.should_receive(:get).with(URI('http://sdr.totango.com/pixel.gif/?sdr_s=fake1234&sdr_u=Sample+User&sdr_o=1&sdr_odn=Sample+Account&sdr_a=Sample+Activity&sdr_m=Sample+Module&sdr_ts=2012-04-18T14%3A49%3A10%2B02%3A00'))
+
+          @totango.track do |t|
+            t.username     = 'Sample User'
+            t.account_id   = 1
+            t.account_name = 'Sample Account'
+            t.activity     = 'Sample Activity'
+            t.module       = 'Sample Module'
+            t.timestamp    = Time.parse('2012-04-18 12:49:10 UTC')
+          end
+      end
+    end
+
     describe 'logging and debugging' do
       it 'should log the output url and never make real http request' do
         logger = double()

@@ -41,14 +41,18 @@ module Totangorb
 
     # Translate params to names that totango understands
     def translate_params(params = {})
-      {
+      translated = {
         sdr_s:   service_id,
         sdr_u:   params[:username],
         sdr_o:   params[:account_id],
         sdr_odn: params[:account_name],
         sdr_a:   params[:activity],
-        sdr_m:   params[:module]
+        sdr_m:   params[:module],
       }.merge(parse_attributes(params.fetch(:attributes, {}))).delete_if { |k, v| v.nil? }
+
+      translated.merge!(sdr_ts: params[:timestamp].to_time.iso8601) if params[:timestamp]
+
+      translated
     end
 
     # Prepends every optional account attribute hash key with 'sdr_u.<key>'
